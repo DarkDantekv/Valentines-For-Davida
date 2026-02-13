@@ -39,6 +39,8 @@
 
     /* Card container */
     .card {
+      <button id="playMusicBtn" onclick="playMusic()">Play Music for Vector 🎵</button>
+      
       position: relative;
       max-width: 600px;
       margin: 50px auto;
@@ -94,7 +96,7 @@
       left: 50%;
       width: 0;
       height: 0;
-      background: url('friend.jpeg') no-repeat center/cover;
+      background: url('friend1.jpeg') no-repeat center/cover;
       transform: translate(-50%, -50%) rotate(45deg);
       border-radius: 50% 50% 0 0;
       transition: width 1s ease, height 1s ease;
@@ -117,12 +119,24 @@
 <body>
 
   <!-- Background Music -->
-  <audio id="bgMusic" autoplay loop>
-    <source src="badbunnysong.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="bgMusic" loop>
+  <source src="badbunnysong.mp3" type="audio/mpeg">
+</audio>
+  
 
+
+    
   <!-- Floating hearts script -->
   <script>
+
+  function playMusic() {
+  const music = document.getElementById('bgMusic');
+  music.play();
+
+  // Optional: hide the button after clicking
+  document.getElementById('playMusicBtn').style.display = 'none';
+  }
+    
     function createHearts() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -136,7 +150,7 @@
 
   <!-- Card -->
   <div class="card">
-    <h1>Happy Galentine's Day 💕</h1>
+    <h1>Happy Galentine's Day! 💕</h1>
 
     <!-- Looping Video -->
     <video autoplay loop muted>
@@ -144,7 +158,7 @@
     </video>
 
     <!-- Surprise Button -->
-    <button id="surpriseBtn" onclick="surprise()">Click for Your Surprise 🎉</button>
+    <button id="surpriseBtn" onclick="surprise()">Click For A Surprise</button>
 
     <!-- Surprise Text -->
     <div id="surpriseText">yes it does look like we are about to kiss rn (in the spirit of valentines day, this is not AI)</div>
