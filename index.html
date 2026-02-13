@@ -3,133 +3,169 @@
 <head>
   <title>Happy Galentine's Day 💖</title>
   <style>
-
-video {
-  border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-  margin: 20px 0;
-}
-  
-    .heart {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
-  transform: rotate(45deg);
-  animation: float 5s linear infinite;
-}
-
-.heart::before,
-.heart::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
-  border-radius: 50%;
-}
-
-.heart::before {
-  top: -10px;
-  left: 0;
-}
-
-.heart::after {
-  left: 10px;
-  top: 0;
-}
-
-@keyframes float {
-  0% { transform: translateY(0) rotate(45deg); opacity: 1; }
-  100% { transform: translateY(-600px) rotate(45deg); opacity: 0; }
-}
-    
     body {
-      background: linear-gradient(to bottom, #ffb6c1, #ffe4ec);
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px;
-      color: #b30059;
+      background: linear-gradient(to bottom, #ffb6c1, #ffe4ec);
+      overflow-x: hidden;
     }
 
-    .card {
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 5s linear infinite;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: 10px; top: 0; }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-600px) rotate(45deg); opacity: 0; }
+    }
 
-      img {
-      border-radius: 15px;
-      margin: 20px 0;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-          }
-      
+    /* Card container */
+    .card {
+      position: relative;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 40px;
       background: white;
       border-radius: 20px;
-      padding: 30px;
-      max-width: 600px;
-      margin: auto;
       box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
     }
 
-    h1 {
-      font-size: 40px;
+    /* Video */
+    video {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+      margin: 20px 0;
     }
 
-    button {
+    /* Surprise button */
+    #surpriseBtn {
       background: #ff4da6;
       color: white;
       border: none;
-      padding: 15px 25px;
+      padding: 15px 30px;
       font-size: 18px;
-      border-radius: 10px;
+      border-radius: 15px;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    #surpriseBtn:hover { background: #ff1a8c; }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      opacity: 0.9;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: confettiFall 1s forwards;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity:1; }
+      100% { transform: translateY(200px) rotate(360deg); opacity:0; }
     }
 
-    button:hover {
-      background: #ff1a8c;
+    /* Expanding heart */
+    #heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: url('friend.jpeg') no-repeat center/cover;
+      transform: translate(-50%, -50%) rotate(45deg);
+      border-radius: 50% 50% 0 0;
+      transition: width 1s ease, height 1s ease;
+      z-index: 10;
     }
+    #heart.expanded {
+      width: 300px;
+      height: 300px;
+    }
+
   </style>
 </head>
-
 <body>
 
-<div class="card">
-  <h1>Happy Galentine’s Day 💕</h1>
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="badbunnysong.mp3" type="audio/mpeg">
+  </audio>
 
-  <p>
-<video width="400" autoplay loop muted>
-  <source src="baileVector.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-  </p>
+  <!-- Floating hearts -->
+  <script>
+    function createHearts() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = (3 + Math.random() * 5) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => { heart.remove(); }, 8000);
+    }
+    setInterval(createHearts, 300);
+  </script>
 
-<button onclick="showLove()">Open Your Surprise 🎁</button>
+  <!-- Card -->
+  <div class="card">
+    <h1>Happy Galentine's Day 💕</h1>
 
-  <p id="message"></p>
-</div>
+    <!-- Looping Video -->
+    <video autoplay loop muted>
+      <source src="baileVector.mp4" type="video/mp4">
+    </video>
 
-<script>
-function showLove() {
-   document.getElementById("message").innerHTML =
-    "TEST 💕🎉";
-  document.body.style.background = "#ffe4ec";
-}
+    <!-- Surprise Button -->
+    <button id="surpriseBtn" onclick="surprise()">Click for Your Surprise 🎉</button>
+  </div>
 
-  function createHearts() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.style.left = Math.random() * window.innerWidth + "px";
-  heart.style.animationDuration = (3 + Math.random() * 5) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}
+  <!-- Expanding heart -->
+  <div id="heart"></div>
 
-setInterval(createHearts, 300);
-  
-  
-</script>
+  <script>
+    function surprise() {
+      const btn = document.getElementById('surpriseBtn');
 
+      // 1️⃣ Confetti
+      for(let i=0;i<30;i++){
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = (btn.offsetLeft + btn.offsetWidth/2 + (Math.random()*100-50)) + 'px';
+        confetti.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+        document.body.appendChild(confetti);
+        setTimeout(()=>{confetti.remove();}, 1500);
+      }
 
+      // 2️⃣ Hide button text & expand heart
+      btn.style.opacity = 0;
+      const heart = document.getElementById('heart');
+      heart.classList.add('expanded');
 
-  
+      // Optional: remove the button completely after animation
+      setTimeout(()=>{btn.style.display='none';}, 1000);
+    }
+  </script>
+
 </body>
 </html>
