@@ -32,15 +32,27 @@
     }
     .heart::before { top: -10px; left: 0; }
     .heart::after { left: 10px; top: 0; }
+
     @keyframes float {
       0% { transform: translateY(0) rotate(45deg); opacity: 1; }
       100% { transform: translateY(-600px) rotate(45deg); opacity: 0; }
     }
 
+    /* Flying animation */
+    @keyframes flyAround {
+      0%   { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg); }
+      25%  { top: 20%; left: 70%; transform: translate(-50%, -50%) rotate(45deg); }
+      50%  { top: 70%; left: 80%; transform: translate(-50%, -50%) rotate(-30deg); }
+      75%  { top: 40%; left: 10%; transform: translate(-50%, -50%) rotate(60deg); }
+      100% { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
+    #heart.flying {
+      animation: flyAround 6s ease-in-out infinite;
+    }
+
     /* Card container */
     .card {
-      <button id="playMusicBtn" onclick="playMusic()">Play Music for Vector 🎵</button>
-      
       position: relative;
       max-width: 600px;
       margin: 50px auto;
@@ -59,8 +71,8 @@
       margin: 20px 0;
     }
 
-    /* Surprise button */
-    #surpriseBtn {
+    /* Buttons */
+    #playMusicBtn, #surpriseBtn {
       background: #ff4da6;
       color: white;
       border: none;
@@ -70,8 +82,11 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      margin: 10px;
     }
-    #surpriseBtn:hover { background: #ff1a8c; }
+    #playMusicBtn:hover, #surpriseBtn:hover {
+      background: #ff1a8c;
+    }
 
     /* Confetti */
     .confetti {
@@ -96,15 +111,16 @@
       left: 50%;
       width: 0;
       height: 0;
-      background: url('friend1.jpeg') no-repeat center/cover;
+      background: url('friend.jpeg') no-repeat center/cover;
+      background-size: cover;
       transform: translate(-50%, -50%) rotate(45deg);
       border-radius: 50% 50% 0 0;
       transition: width 1s ease, height 1s ease;
       z-index: 10;
     }
     #heart.expanded {
-      width: 300px;
-      height: 300px;
+      width: 500px;
+      height: 500px;
     }
 
     /* Surprise text */
@@ -120,23 +136,11 @@
 
   <!-- Background Music -->
   <audio id="bgMusic" loop>
-  <source src="badbunnysong.mp3" type="audio/mpeg">
-</audio>
-  
+    <source src="badbunnysong.mp3" type="audio/mpeg">
+  </audio>
 
-
-    
   <!-- Floating hearts script -->
   <script>
-
-  function playMusic() {
-  const music = document.getElementById('bgMusic');
-  music.play();
-
-  // Optional: hide the button after clicking
-  document.getElementById('playMusicBtn').style.display = 'none';
-  }
-    
     function createHearts() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -146,6 +150,49 @@
       setTimeout(() => { heart.remove(); }, 8000);
     }
     setInterval(createHearts, 300);
+
+    // Play music button
+    function playMusic() {
+      const music = document.getElementById('bgMusic');
+      music.play();
+      document.getElementById('playMusicBtn').style.display = 'none';
+    }
+
+    // Surprise button
+    function surprise() {
+      const btn = document.getElementById('surpriseBtn');
+      const heart = document.getElementById('heart');
+      const text = document.getElementById('surpriseText');
+      const music = document.getElementById('bgMusic');
+
+      // 1️⃣ Play music (if not already)
+      music.play();
+
+      // 2️⃣ Confetti
+      for(let i=0;i<30;i++){
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = (btn.offsetLeft + btn.offsetWidth/2 + (Math.random()*100-50)) + 'px';
+        confetti.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+        document.body.appendChild(confetti);
+        setTimeout(()=>{confetti.remove();}, 1500);
+      }
+
+      // 3️⃣ Hide button & expand heart
+      btn.style.opacity = 0;
+      heart.classList.add('expanded');
+
+      // 4️⃣ Show surprise text
+      text.style.display = "block";
+
+      // 5️⃣ Make heart fly
+      setTimeout(() => {
+        heart.classList.add('flying');
+      }, 1200);
+
+      // Remove button completely
+      setTimeout(()=>{btn.style.display='none';}, 1000);
+    }
   </script>
 
   <!-- Card -->
@@ -157,43 +204,18 @@
       <source src="baileVector.mp4" type="video/mp4">
     </video>
 
+    <!-- Play Music Button -->
+    <button id="playMusicBtn" onclick="playMusic()">Play Music for Vector 🎵</button>
+
     <!-- Surprise Button -->
     <button id="surpriseBtn" onclick="surprise()">Click For A Surprise</button>
 
     <!-- Surprise Text -->
-    <div id="surpriseText">yes it does look like we are about to kiss rn (in the spirit of valentines day, this is not AI)</div>
+    <div id="surpriseText">yes we are about to kiss rn 💋</div>
   </div>
 
   <!-- Expanding heart -->
   <div id="heart"></div>
-
-  <script>
-    function surprise() {
-      const btn = document.getElementById('surpriseBtn');
-      const heart = document.getElementById('heart');
-      const text = document.getElementById('surpriseText');
-
-      // 1️⃣ Confetti
-      for(let i=0;i<30;i++){
-        const confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.left = (btn.offsetLeft + btn.offsetWidth/2 + (Math.random()*100-50)) + 'px';
-        confetti.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
-        document.body.appendChild(confetti);
-        setTimeout(()=>{confetti.remove();}, 1500);
-      }
-
-      // 2️⃣ Hide button & expand heart
-      btn.style.opacity = 0;
-      heart.classList.add('expanded');
-
-      // 3️⃣ Show surprise text
-      text.style.display = "block";
-
-      // Optional: remove button after animation
-      setTimeout(()=>{btn.style.display='none';}, 1000);
-    }
-  </script>
 
 </body>
 </html>
