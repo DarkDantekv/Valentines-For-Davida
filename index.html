@@ -4,6 +4,12 @@
   <title>Happy Galentine's Day 💖</title>
   <style>
 
+video {
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+  margin: 20px 0;
+}
+  
     .heart {
   position: absolute;
   width: 20px;
@@ -88,18 +94,22 @@
   <h1>Happy Galentine’s Day 💕</h1>
 
   <p>
-    <img src="bot.jpg" alt="I like you a Bot" width="300">
+<video width="400" autoplay loop muted>
+  <source src="baileVector.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
   </p>
 
-  <button onclick="showLove()">Click for Love 💖</button>
+<button onclick="showLove()">Open Your Surprise 🎁</button>
 
   <p id="message"></p>
 </div>
 
 <script>
 function showLove() {
-  document.getElementById("message").innerHTML =
-    "You are appreciated more than you know 💝";
+   document.getElementById("message").innerHTML =
+    "TEST 💕🎉";
+  document.body.style.background = "#ffe4ec";
 }
 
   function createHearts() {
